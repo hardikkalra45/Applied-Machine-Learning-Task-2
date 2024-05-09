@@ -1,30 +1,14 @@
-Assignment 3: Testing & Model Serving [due 7 Mar 2024, extended to 12 Mar 2024]
+Assignment 2: Experiment Tracking
 
-1. unit testing
-- In score.py, write a function with the following signature that scores a trained model on a text:
+1. data version control
+- in prepare.ipynb, track the versions of data using dvc
+    - load the raw data into raw_data.csv and save the split data into train.csv/validation.csv/test.csv
+    - update train/validation/test split by choosing different random seed
+    - checkout the first version (before update) using dvc and print the distribution of target variable (number of 0s and number of 1s) in train.csv, validation.csv, and test.csv
+    - checkout the updated version using dvc and print the distribution of target variable in train.csv, validation.csv, test.csv
+    - bonus: (decouple compute and storage) track the data versions using google drive as storage
 
-def score(text:str,
-         model:sklearn.estimator,
-         threshold:float) -> prediction:bool,
-                             propensity:float
-                             
-- In test.py, write a unit test function test_score(.) to test the score function.
-You may reload and use the best model saved during experiments in train.ipynb (in joblib/pkl format) for testing the score function.
-You may consider the following points to construct your test cases:
-    - does the function produce some output without crashing (smoke test)
-    - are the input/output formats/types as expected (format test)
-    - is prediction value 0 or 1
-    - is propensity score between 0 and 1
-    - if you put the threshold to 0 does the prediction always become 1
-    - if you put the threshold to 1 does the prediction always become 0
-    - on an obvious spam input text is the prediction 1
-    - on an obvious non-spam input text is the prediction 0
-
-2. flask serving
-- In app.py, create a flask endpoint /score that receives a text as a POST request and gives a response in the json format consisting of prediction and propensity
-- In test.py, write an integration test function test_flask(.) that does the following:
-    - launches the flask app using command line (e.g. use os.system)
-    - test the response from the localhost endpoint
-    - closes the flask app using command line
-
-In coverage.txt produce the coverage report output of the unit test and integration test using pytest
+2. model version control and experiment tracking
+- in train.ipynb track the experiments and model versions using mlflow
+    - build, track, and register 3 benchmark models using MLflow
+    - checkout and print AUCPR for each of the three benchmark models
